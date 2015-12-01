@@ -1,11 +1,11 @@
+
 /*
 Multi-tenancy for Mongoose
 
 See readme for examples and info
 @author Jason Raede <jason@torchedm.com>
-*/
-
-var collectionDelimiter, dot, mongoose, owl, _;
+ */
+var _, collectionDelimiter, dot, mongoose, owl;
 
 mongoose = require('mongoose');
 
@@ -17,10 +17,10 @@ _ = require('underscore');
 
 owl = require('owl-deepcopy');
 
+
 /*
 Added by @watnotte
-*/
-
+ */
 
 collectionDelimiter = '__';
 
@@ -31,10 +31,10 @@ module.exports = function(delimiter) {
 };
 
 mongoose.mtModel = function(name, schema, collectionName) {
-  var extendPathWithTenantId, extendSchemaWithTenantId, model, modelName, multitenantSchemaPlugin, newSchema, origSchema, parts, pre, preModelName, precompile, split, tenantCollectionName, tenantId, tenantModelName, uniq, _i, _len;
+  var extendPathWithTenantId, extendSchemaWithTenantId, i, len, model, modelName, multitenantSchemaPlugin, newSchema, origSchema, parts, pre, preModelName, precompile, split, tenantCollectionName, tenantId, tenantModelName, uniq;
   precompile = [];
   extendPathWithTenantId = function(tenantId, path) {
-    var key, newPath, val, _ref;
+    var key, newPath, ref, val;
     if (path.instance !== 'ObjectID' && path.instance !== mongoose.Schema.Types.ObjectId) {
       return false;
     }
@@ -44,9 +44,9 @@ mongoose.mtModel = function(name, schema, collectionName) {
     newPath = {
       type: mongoose.Schema.Types.ObjectId
     };
-    _ref = path.options;
-    for (key in _ref) {
-      val = _ref[key];
+    ref = path.options;
+    for (key in ref) {
+      val = ref[key];
       if (key !== 'type') {
         newPath[key] = _.clone(val, true);
       }
@@ -56,22 +56,22 @@ mongoose.mtModel = function(name, schema, collectionName) {
     return newPath;
   };
   extendSchemaWithTenantId = function(tenantId, schema) {
-    var config, extension, newPath, newSchema, newSubSchema, prop, _ref;
+    var config, extension, newPath, newSchema, newSubSchema, prop, ref;
     extension = {};
     newSchema = owl.deepCopy(schema);
     newSchema.callQueue.forEach(function(k) {
-      var args, key, val, _ref;
+      var args, key, ref, val;
       args = [];
-      _ref = k[1];
-      for (key in _ref) {
-        val = _ref[key];
+      ref = k[1];
+      for (key in ref) {
+        val = ref[key];
         args.push(val);
       }
       return k[1] = args;
     });
-    _ref = schema.paths;
-    for (prop in _ref) {
-      config = _ref[prop];
+    ref = schema.paths;
+    for (prop in ref) {
+      config = ref[prop];
       if (config.options.type instanceof Array) {
         if (config.schema != null) {
           newSubSchema = extendSchemaWithTenantId(tenantId, config.schema);
@@ -124,8 +124,8 @@ mongoose.mtModel = function(name, schema, collectionName) {
     }
     if (precompile.length) {
       uniq = _.uniq(precompile);
-      for (_i = 0, _len = uniq.length; _i < _len; _i++) {
-        pre = uniq[_i];
+      for (i = 0, len = uniq.length; i < len; i++) {
+        pre = uniq[i];
         split = pre.split('.');
         preModelName = split[0] + collectionDelimiter + split[1];
         if ((mongoose.models[preModelName] == null) && mongoose.mtModel.goingToCompile.indexOf(preModelName) < 0) {

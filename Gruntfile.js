@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 		exec:{
 			test: {
 				cmd:function(ex) {
-					return f('NODE_ENV=test mocha %s', ex)
+					return f('mocha %s', ex)
 				}
 			}
 			

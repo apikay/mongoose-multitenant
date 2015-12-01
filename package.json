@@ -26,22 +26,19 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "mongoose-schema-extend": "~0.1.7",
-    "dot-component": "~0.1.0",
-    "underscore": "~1.5.2",
-    "owl-deepcopy": "0.0.2"
+    "mongoose-schema-extend": "~0.2.0",
+    "dot-component": "~0.1.1",
+    "underscore": "~1.8.3",
+    "owl-deepcopy": "0.0.4"
   },
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-exec": "~0.4.3",
-    "grunt-contrib-coffee": "~0.8.0",
+    "grunt": "~0.4.5",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-exec": "~0.4.6",
+    "grunt-contrib-coffee": "~0.13.0",
     "grunt-sed": "~0.1.1",
-    "semver": "~2.2.1",
-    "should": "~2.1.1",
-    "mongoose": "~3.8.3"
-  },
-  "peerDependencies": {
-    "mongoose": ">=3.x"
+    "semver": "~5.1.0",
+    "should": "~7.1.1",
+    "mongoose": "^4.2.8"
   }
 }

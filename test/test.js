@@ -89,39 +89,41 @@ mongoose.mtModel('Boof', boofSchema);
 
 describe('Multitenant', function() {
   it('should be able to create a foo model for a tenant', function(done) {
-    var fooClass, myFoo,
-      _this = this;
+    var fooClass, myFoo;
     fooClass = mongoose.mtModel('tenant1.Foo');
     myFoo = new fooClass({
       title: 'My Foo'
     });
-    return myFoo.save(function(err, results) {
-      _this.foo = results;
-      return mongoose.mtModel('tenant1.Foo').find(function(err, results) {
-        results.length.should.equal(1);
-        results[0].title.should.equal('My Foo');
-        return done();
-      });
-    });
+    return myFoo.save((function(_this) {
+      return function(err, results) {
+        _this.foo = results;
+        return mongoose.mtModel('tenant1.Foo').find(function(err, results) {
+          results.length.should.equal(1);
+          results[0].title.should.equal('My Foo');
+          return done();
+        });
+      };
+    })(this));
   });
   it('collection should be named tenant1__Foos', function(done) {
     mongoose.mtModel('tenant1.Foo').collection.name.should.equal('tenant1__foos');
     return done();
   });
   it('should be able to create a foo model for a tenant with a . in its name', function(done) {
-    var fooClass, myFoo,
-      _this = this;
+    var fooClass, myFoo;
     fooClass = mongoose.mtModel('dottenant.org.Foo');
     myFoo = new fooClass({
       title: 'My Foo'
     });
-    return myFoo.save(function(err, results) {
-      return mongoose.mtModel('dottenant.org.Foo').find(function(err, results) {
-        results.length.should.equal(1);
-        results[0].title.should.equal('My Foo');
-        return done();
-      });
-    });
+    return myFoo.save((function(_this) {
+      return function(err, results) {
+        return mongoose.mtModel('dottenant.org.Foo').find(function(err, results) {
+          results.length.should.equal(1);
+          results[0].title.should.equal('My Foo');
+          return done();
+        });
+      };
+    })(this));
   });
   it('should copy non-mongoose config options through to schema duplicates', function() {
     mongoose.mtModel('tenant1.Bar').schema.paths.array.caster.options.$tenant.should.equal(true);
@@ -193,26 +195,27 @@ describe('Multitenant', function() {
     });
   });
   it('should populate tenant to non-tenant normally', function(done) {
-    var bazClass, myBaz,
-      _this = this;
+    var bazClass, myBaz;
     bazClass = mongoose.model('Baz');
     myBaz = new bazClass({
       title: 'My Baz'
     });
-    return myBaz.save(function(err, res) {
-      var barClass, myBar;
-      _this.baz = res;
-      barClass = mongoose.mtModel('tenant3.Bar');
-      myBar = new barClass({
-        notTenant: _this.baz._id
-      });
-      return myBar.save(function(err, results) {
-        return mongoose.mtModel('tenant3.Bar').findById(results._id).populate('notTenant').exec(function(err, res) {
-          res.notTenant.title.should.equal('My Baz');
-          return done();
+    return myBaz.save((function(_this) {
+      return function(err, res) {
+        var barClass, myBar;
+        _this.baz = res;
+        barClass = mongoose.mtModel('tenant3.Bar');
+        myBar = new barClass({
+          notTenant: _this.baz._id
         });
-      });
-    });
+        return myBar.save(function(err, results) {
+          return mongoose.mtModel('tenant3.Bar').findById(results._id).populate('notTenant').exec(function(err, res) {
+            res.notTenant.title.should.equal('My Baz');
+            return done();
+          });
+        });
+      };
+    })(this));
   });
   return it('should handle precompile with circular references', function(done) {
     var foobClass;
