@@ -34,7 +34,7 @@ module.exports = function(m, delimiter) {
 };
 
 var init = function(mongoose) {
-  require('../mongoose-schema-extend')(mongoose);
+  require('mongoose-schema-extend')(mongoose);
 
   mongoose.__proto__.Connection.prototype.__proto__.mtModel = mongoose.mtModel = function (name, schema, collectionName) {
     var extendPathWithTenantId, extendSchemaWithTenantId, i, len, model, modelName, multitenantSchemaPlugin, newSchema, origSchema, parts, pre, preModelName, precompile, split, tenantCollectionName, tenantId, tenantModelName, uniq;
